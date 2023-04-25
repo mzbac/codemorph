@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "CodeMorph",
+  "version": "1.0.0",
+  "description": "Modify an existing JavaScript file without injecting a content script",
+  "icons": {
+    "48": "icon.png"
+  },
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  "permissions": [
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking",
+    "storage",
+    "tabs"
+  ],
+  "content_security_policy": "script-src 'sha256-8aYLH45sYe/39qUeEGcmsplitm6RAJdsGT34Xfjc/iI=' 'self' https://cdn.jsdelivr.net; object-src 'self'",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  }
+}
