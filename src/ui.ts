@@ -1,20 +1,8 @@
-declare const monaco: any;
-
-async function loadMonaco() {
-  return new Promise<void>((resolve) => {
-    (window as any).require.config({
-      paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.30.1/min/vs" },
-    });
-    (window as any).require(["vs/editor/editor.main"], () => {
-      resolve();
-    });
-  });
-}
+import * as monaco from "monaco-editor";
+import "monaco-editor/min/vs/editor/editor.main.css";
 
 async function initUI() {
-  await loadMonaco();
-
-  const editor = monaco.editor.create(document.getElementById("editor"), {
+  const editor = monaco.editor.create(document.getElementById("editor")!, {
     value: "",
     language: "javascript",
     theme: "vs-dark",

@@ -1,5 +1,6 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
+const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
 const fileExtensions = [
   "jpg",
@@ -72,5 +73,6 @@ module.exports = {
     new CopyPlugin({
       patterns: [{ from: ".", to: ".", context: "public" }],
     }),
+    new MonacoWebpackPlugin()
   ],
 };

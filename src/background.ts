@@ -1,33 +1,36 @@
 let urlPattern: string | null = null;
 let modifiedCode: string | null = null;
 
-const modifyJavaScript = () => {
-  if (!urlPattern) {
-    return;
-  }
+const modifyJavaScript = async () => {
+  const ruleId = 1;
 
-  const filter = {
-    urls: [urlPattern],
-    types: ["script" as const],
-  };
+  await chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: [ruleId],
+  });
 
-  chrome.webRequest.onBeforeRequest.addListener(
-    (details) => {
-      if (modifiedCode) {
-        return {
-          redirectUrl:
-            "data:application/javascript," + encodeURIComponent(modifiedCode),
-        };
-      } else {
-        chrome.runtime.sendMessage({ type: "jsUrl", url: details.url });
-      }
-    },
-    filter,
-    ["blocking"]
-  );
+  if (urlPattern && modifiedCode) {
+    chrome.declarativeNetRequest.updateDynamicRules({
+      addRules: [
+        {
+          id: ruleId,
+          priority: 1,
+          action: {
+            type: chrome.declarativeNetRequest.RuleActionType.REDIRECT,
+            redirect: {
+              url: "data:application/javascript," + encodeURIComponent(modifiedCode),
+            },
+          },
+          condition: {
+            urlFilter: urlPattern,
+            resourceTypes: [chrome.declarativeNetRequest.ResourceType.SCRIPT],
+          },
+        },
+      ],
+    });
+  } 
 };
 
-chrome.browserAction.onClicked.addListener(() => {
+chrome.action.onClicked.addListener(() => {
   chrome.tabs.create({ url: "index.html" });
 });
 
