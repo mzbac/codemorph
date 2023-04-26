@@ -35,17 +35,6 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              limit: 1000,
-            },
-          },
-        ],
-      },
-      {
         test: /\.tsx?$/,
         loader: "ts-loader",
         exclude: /node_modules/,
