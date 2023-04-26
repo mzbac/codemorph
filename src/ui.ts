@@ -19,6 +19,7 @@ async function initUI() {
     language: "javascript",
     theme: "vs-dark",
     automaticLayout: true,
+    wordWrap: "on", 
   });
 
   const urlPatternInput = document.getElementById(
