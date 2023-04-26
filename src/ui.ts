@@ -18,8 +18,14 @@ async function initUI() {
   ) as HTMLButtonElement;
   const clearButton = document.getElementById("clear") as HTMLButtonElement;
 
-  saveChangesButton.addEventListener("click", () => {
-    // Send the modified code and URL pattern to the background script
+  saveChangesButton.addEventListener("click", async () => {
+    if(!editor.getValue()){
+      const response = await fetch(urlPatternInput.value);
+      const jsContent = await response.text();
+
+      editor.setValue(jsContent);
+    }
+
     chrome.runtime.sendMessage({
       type: "modifiedCode",
       urlPattern: urlPatternInput.value,
@@ -36,17 +42,6 @@ async function initUI() {
     chrome.runtime.sendMessage({
       type: "disableInterception",
     });
-  });
-
-  // Listen for messages from the background script
-  chrome.runtime.onMessage.addListener(async (message) => {
-    if (message.type === "jsUrl") {
-      const response = await fetch(message.url);
-      const jsContent = await response.text();
-
-      // Set the fetched JS content as the editor content
-      editor.setValue(jsContent);
-    }
   });
 }
 
